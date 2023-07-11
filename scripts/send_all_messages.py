@@ -1,6 +1,6 @@
 import pyrtma
-import msg_defs.test_defs
-import time
+import sys
+import msg_defs.climber_config
 
 c = pyrtma.Client(module_id=198)
 c.connect(server_name="127.0.0.1:7111")
@@ -10,7 +10,7 @@ for mt, mdf in pyrtma.user_msg_defs.items():
     msg = c.wait_for_acknowledgement()
     if msg is None:
         raise RuntimeError
-    c.send_message(mdf(), dest_mod_id=199)
+    c.send_message(mdf())
     while True:
         msg = c.read_message(1)
         if msg and msg.data.type_id == mt:

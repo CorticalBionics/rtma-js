@@ -8,11 +8,7 @@ let client = new RTMAClient(server, port, module_id);
 client.init();
 
 client.on_connect = () => {
-    for (const [key, value] of Object.entries(RTMA.MT)) {
-        if (value > 1200) {
-            client.subscribe(RTMA.MT[key]);
-        };
-    };
+    client.subscribe(RTMA.MT.TRIAL_METADATA);
 }
 
 client.on_message = (msg) => {
@@ -23,13 +19,7 @@ client.on_message = (msg) => {
             break;
         }
     }
-
     console.log(`${name}: ${JSON.stringify(msg)}`);
-
-    // Echo message back
-    if (msg.header.msg_type > 1200)
-        client.send_message(msg.header.msg_type, msg.data, msg.header.src_mod_id);
-
 };
 
 

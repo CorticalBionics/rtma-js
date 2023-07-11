@@ -8,7 +8,7 @@ class WebServer(http.server.HTTPServer):
         address = "localhost"
         port = 8000
         directory = pathlib.Path(__file__).parent
-        print(directory)
+        print(f"Serving on {address}:{port} -> {directory}")
         handler = functools.partial(
             http.server.SimpleHTTPRequestHandler, directory=str(directory)
         )
