@@ -26,7 +26,7 @@ Here are the commands to get a local setup of rtma running in my dev-yaml branch
 
 6. Build the test copy of climber_config in the testing folder:
 
-    `python -m pyrtma.compile -i testing/defs/climber_config.yaml --py --c --mat --js`
+    `python -m pyrtma.compile -i msg_defs/climber_config.yaml --py --c --mat --js`
 
 7. In one console, activate the env and run message manager:
 
