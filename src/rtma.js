@@ -196,7 +196,7 @@ export class RTMAClient {
         this._on_connect = (msg) => {
             this.connected = true;
             // Store module id if dynamically assigned
-            if (msg.header.dest_mod_id != 0) {
+            if (msg.header.dest_mod_id !== 0) {
                 this.module_id = msg.header.dest_mod_id;
             }
 
@@ -282,14 +282,14 @@ export class RTMAClient {
     core_msg_handler(msg) {
         switch (msg.header.msg_type) {
             case CORE.MT.ACKNOWLEDGE:
-
                 if (this.connect_ack) {
                     this.connect_ack = false;
                     this._on_connect(msg);
                 }
-
                 break;
             case CORE.MT.EXIT:
+                break;
+            default: 
                 break;
         }
 
