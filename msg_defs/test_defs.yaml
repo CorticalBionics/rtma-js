@@ -1,0 +1,4 @@
+message_defs:
+  PING:
+    id: 1000
+    fields: null
