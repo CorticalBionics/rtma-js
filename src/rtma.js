@@ -289,7 +289,7 @@ export class RTMAClient {
                 break;
             case CORE.MT.EXIT:
                 break;
-            default: 
+            default:
                 break;
         }
 
@@ -317,6 +317,9 @@ export class RTMAClient {
         }
 
         this.ws.onmessage = function (event) {
+            // Get a timestamp
+            let now = Date.now() / 1000;
+
             // Decode the rtma msg as json
             let clean = event.data.replace(/Infinity/g, "1e1000")
             let msg = JSON.parse(clean);
@@ -329,6 +332,10 @@ export class RTMAClient {
 
             // Call the internal handler
             self.core_msg_handler(msg);
+
+
+            // Over-write the proxy recv_time
+            msg.header.recv_time = now;
 
             // Call the user installed message handler
             self.on_message(msg);
