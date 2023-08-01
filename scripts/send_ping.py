@@ -9,7 +9,9 @@ msg = msg_defs.test_defs.MDF_PING()
 rate = 0.020
 stats = [0.0 for _ in range(250)]
 i = 0
+serial = 0
 while True:
+    msg.serial_no += 1
     c.send_message(msg)
     t0 = time.perf_counter()
     while (time.perf_counter() - t0) < rate:

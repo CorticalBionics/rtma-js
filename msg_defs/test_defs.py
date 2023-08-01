@@ -245,10 +245,12 @@ class MDF_TIMING_MESSAGE(pyrtma.MessageData):
 
 @pyrtma.message_def
 class MDF_PING(pyrtma.MessageData):
-    _fields_ = []
+    _fields_ = [
+        ("serial_no", ctypes.c_int)
+    ]
     type_id = 1000
     type_name = "PING"
-    type_hash = 0x4ebbbe74
+    type_hash = 0xe6f432ea
     type_source = "D:\\GIT\\rtma-js\\msg_defs\\test_defs.yaml"
 
 

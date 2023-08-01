@@ -195,7 +195,11 @@ RTMA.MDF.TIMING_MESSAGE = () => {
 	}
 };
 
-RTMA.MDF.PING = () => { return {} };
+RTMA.MDF.PING = () => {
+	return {
+		serial_no: type_map.int()
+	}
+};
 
 // Message Definition Hashes
 RTMA.HASH = {};
@@ -215,4 +219,4 @@ RTMA.HASH.FORCE_DISCONNECT = "c37c54e8";
 RTMA.HASH.MODULE_READY = "cc0a3aad";
 RTMA.HASH.SAVE_MESSAGE_LOG = "515569e9";
 RTMA.HASH.TIMING_MESSAGE = "3595c23e";
-RTMA.HASH.PING = "4ebbbe74";
+RTMA.HASH.PING = "e6f432ea";
