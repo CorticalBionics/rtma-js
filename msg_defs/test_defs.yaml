@@ -3,3 +3,27 @@ message_defs:
     id: 1000
     fields:
       serial_no: int
+
+  RASTER:
+    id: 1001
+    fields:
+      seq_no: unsigned long
+      bins: unsigned long[32]
+      ai_0: unsigned char[32]
+      ai_1: unsigned char[32]
+      ai_2: unsigned char[32]
+      ai_3: unsigned char[32]
+      ai_4: unsigned char[32]
+      ai_5: unsigned char[32]
+      ai_6: unsigned char[32]
+      ai_7: unsigned char[32]
+      ai_8: unsigned char[32]
+      ai_9: unsigned char[32]
+      ai_10: unsigned char[32]
+      ai_11: unsigned char[32]
+
+  STATUS:
+    id: 1002
+    fields:
+      msg_length: int
+      msg: char[1024]

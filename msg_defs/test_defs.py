@@ -56,6 +56,8 @@ MT_MODULE_READY = 26
 MT_SAVE_MESSAGE_LOG = 56
 MT_TIMING_MESSAGE = 80
 MT_PING = 1000
+MT_RASTER = 1001
+MT_STATUS = 1002
 
 
 # Struct Definitions
@@ -254,6 +256,42 @@ class MDF_PING(pyrtma.MessageData):
     type_source = "D:\\GIT\\rtma-js\\msg_defs\\test_defs.yaml"
 
 
+@pyrtma.message_def
+class MDF_RASTER(pyrtma.MessageData):
+    _fields_ = [
+        ("seq_no", ctypes.c_ulong),
+        ("bins", ctypes.c_ulong * 32),
+        ("ai_0", ctypes.c_ubyte * 32),
+        ("ai_1", ctypes.c_ubyte * 32),
+        ("ai_2", ctypes.c_ubyte * 32),
+        ("ai_3", ctypes.c_ubyte * 32),
+        ("ai_4", ctypes.c_ubyte * 32),
+        ("ai_5", ctypes.c_ubyte * 32),
+        ("ai_6", ctypes.c_ubyte * 32),
+        ("ai_7", ctypes.c_ubyte * 32),
+        ("ai_8", ctypes.c_ubyte * 32),
+        ("ai_9", ctypes.c_ubyte * 32),
+        ("ai_10", ctypes.c_ubyte * 32),
+        ("ai_11", ctypes.c_ubyte * 32)
+    ]
+    type_id = 1001
+    type_name = "RASTER"
+    type_hash = 0xda51540c
+    type_source = "D:\\GIT\\rtma-js\\msg_defs\\test_defs.yaml"
+
+
+@pyrtma.message_def
+class MDF_STATUS(pyrtma.MessageData):
+    _fields_ = [
+        ("msg_length", ctypes.c_int),
+        ("msg", ctypes.c_char * 1024)
+    ]
+    type_id = 1002
+    type_name = "STATUS"
+    type_hash = 0x704571a8
+    type_source = "D:\\GIT\\rtma-js\\msg_defs\\test_defs.yaml"
+
+
 # Collect all info into one object
 class _constants:
     MAX_MODULES = 200
@@ -308,6 +346,8 @@ class _MT:
     SAVE_MESSAGE_LOG = 56
     TIMING_MESSAGE = 80
     PING = 1000
+    RASTER = 1001
+    STATUS = 1002
 
 
 class _MDF:
@@ -327,6 +367,8 @@ class _MDF:
     SAVE_MESSAGE_LOG = MDF_SAVE_MESSAGE_LOG
     TIMING_MESSAGE = MDF_TIMING_MESSAGE
     PING = MDF_PING
+    RASTER = MDF_RASTER
+    STATUS = MDF_STATUS
 
 
 class _RTMA:

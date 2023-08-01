@@ -88,6 +88,8 @@ RTMA.MT.MODULE_READY = 26;
 RTMA.MT.SAVE_MESSAGE_LOG = 56;
 RTMA.MT.TIMING_MESSAGE = 80;
 RTMA.MT.PING = 1000;
+RTMA.MT.RASTER = 1001;
+RTMA.MT.STATUS = 1002;
 
 // Struct Definitions
 RTMA.SDF = {};
@@ -201,6 +203,32 @@ RTMA.MDF.PING = () => {
 	}
 };
 
+RTMA.MDF.RASTER = () => {
+	return {
+		seq_no: type_map.unsigned_long(),
+		bins: Array(32).fill(type_map.unsigned_long()),
+		ai_0: Array(32).fill(type_map.unsigned_char()),
+		ai_1: Array(32).fill(type_map.unsigned_char()),
+		ai_2: Array(32).fill(type_map.unsigned_char()),
+		ai_3: Array(32).fill(type_map.unsigned_char()),
+		ai_4: Array(32).fill(type_map.unsigned_char()),
+		ai_5: Array(32).fill(type_map.unsigned_char()),
+		ai_6: Array(32).fill(type_map.unsigned_char()),
+		ai_7: Array(32).fill(type_map.unsigned_char()),
+		ai_8: Array(32).fill(type_map.unsigned_char()),
+		ai_9: Array(32).fill(type_map.unsigned_char()),
+		ai_10: Array(32).fill(type_map.unsigned_char()),
+		ai_11: Array(32).fill(type_map.unsigned_char())
+	}
+};
+
+RTMA.MDF.STATUS = () => {
+	return {
+		msg_length: type_map.int(),
+		msg: Array(1024).fill(type_map.char())
+	}
+};
+
 // Message Definition Hashes
 RTMA.HASH = {};
 
@@ -220,3 +248,5 @@ RTMA.HASH.MODULE_READY = "cc0a3aad";
 RTMA.HASH.SAVE_MESSAGE_LOG = "515569e9";
 RTMA.HASH.TIMING_MESSAGE = "3595c23e";
 RTMA.HASH.PING = "e6f432ea";
+RTMA.HASH.RASTER = "da51540c";
+RTMA.HASH.STATUS = "704571a8";
