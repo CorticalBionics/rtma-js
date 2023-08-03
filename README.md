@@ -50,3 +50,45 @@ Here are the commands to get a local setup of rtma running in my dev-yaml branch
     ```
 
 10. Open a browser and go to the example page: ```localhost:8000/example/echo/index.html```
+
+
+## Installing as dependency
+To install rtma-js as a npm package into your react project:
+
+1. Clone this repo
+
+    `git clone github.com/pitt-rnel/rtma-js`
+
+2. cd into your React project directory (not the Github repo but the actual React project folder)
+
+3. NPM install
+   
+   For example if your SpikeViewer repo and the rtma-js repo are in the same dirctory, run
+   
+   `npm install ../../rtma-js`
+
+4. Using RTMAClient
+
+    ```
+    import { RTMA } from "climber_message";
+    import { RTMAClient } from "rtma-js";
+
+    export default function Main() {    
+        let server = "127.0.0.1";
+        let port = 5678;
+        let module_id = 0;
+
+        let client = new RTMAClient(server, port, module_id);
+
+        client.init();
+        client.on_connect = () => {
+            // subscribe to RTMA messages
+            client.subscribe(RTMA.MT.FILTERED_SPIKE);
+        }
+
+        client.on_message = (msg) => {
+            // your logic here
+        }
+
+    }      
+    ```
