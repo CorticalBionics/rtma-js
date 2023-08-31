@@ -260,16 +260,20 @@ export class RTMAClient {
         this.ws.close();
     }
 
-    subscribe(msg_type) {
-        let msg = CORE.MDF.SUBSCRIBE();
-        msg.msg_type = msg_type;
-        this.send_message(CORE.MT.SUBSCRIBE, msg);
+    subscribe(msg_types) {
+        msg_types.forEach((msg_type) => {
+            let msg = CORE.MDF.SUBSCRIBE();
+            msg.msg_type = msg_type;
+            this.send_message(CORE.MT.SUBSCRIBE, msg);
+        })
     }
 
-    unsubscribe(msg_type) {
-        let msg = CORE.MDF.UNSUBSCRIBE();
-        msg.msg_type = msg_type;
-        this.send_message(CORE.MT.UNSUBSCRIBE, msg);
+    unsubscribe(msg_types) {
+        msg_types.forEach((msg_type) => {
+            let msg = CORE.MDF.UNSUBSCRIBE();
+            msg.msg_type = msg_type;
+            this.send_message(CORE.MT.UNSUBSCRIBE, msg);
+        })
     }
 
     error_handler(msg) {
