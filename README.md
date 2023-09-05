@@ -82,8 +82,8 @@ To install rtma-js as a npm package into your react project:
 
         client.init();
         client.on_connect = () => {
-            // subscribe to RTMA messages
-            client.subscribe(RTMA.MT.FILTERED_SPIKE);
+            // subscribe to an array of RTMA messages
+            client.subscribe([RTMA.MT.FILTERED_SPIKE]);
         }
 
         client.on_message = (msg) => {
@@ -91,4 +91,57 @@ To install rtma-js as a npm package into your react project:
         }
 
     }      
+    ```
+
+
+    A more complicated example with React useEffect() hook
+    ```
+    import { useState, useEffect, useRef } from 'react';
+    import { RTMA } from "climber_message";
+    import { RTMAClient } from "rtma-js";
+    
+    export default function Main() {
+       const ws = useRef(null);
+        
+     useEffect(() => {
+        let client = new RTMAClient(server, port, module_id);
+        client.init();
+
+        client.on_connect = () => {
+            client.subscribe([RTMA.MT.FILTERED_SPIKE, RTMA.MT.SV_MSG]);
+        }
+
+        client.on_message = (msg) => {
+            if (msg.header.msg_type === RTMA.MT.FILTERED_SPIKE) {
+                //your logic
+                setSpikeCount(msg.data[graphType.current])
+            }
+        }
+
+        /**
+         * Storing client as a useRef() allows the websocket state to be accessible 
+         * in other cycles of this component and react application
+         * You can pass it to other components through props or useContext()
+         */
+        ws.current = client;
+    }, []);
+
+    /**
+     * Sending a message when an action is triggered.
+     * You can't do this in useEffect() because useEffect() is meant to be ran only once 
+     * at initial rendering unless specified with dependencies.
+     * But since we are creating and initializing our client in useEffect(), we want it
+     * only ran once.
+     * We now have client stored as a useRef, so we can just call ws.current.send_message()
+     */
+     onButtonClick() {
+         let data = {
+         key: 'get_config',
+         value: ""
+     }
+     
+     if (ws.current.connected)
+         ws.current.send_message(RTMA.MT.SV_MSG, data);
+     }
+
     ```
