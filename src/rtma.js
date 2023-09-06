@@ -181,7 +181,7 @@ export class RTMAClient {
     constructor(server, port, module_id = 0, host_id = 0) {
         this.server = server;
         this.port = port;
-        this.ws_ready = false;
+        this.ready = false;
         this.error = false;
         this.connected = false;
         this.host_id = host_id;
@@ -246,6 +246,7 @@ export class RTMAClient {
     }
 
     connect() {
+        console.log('rtma.js connect')
         let msg = CORE.MDF.CONNECT();
         msg.logger_status = 0;
         msg.daemon_status = 0;
@@ -304,7 +305,7 @@ export class RTMAClient {
         var self = this;
 
         this.ws.onopen = function (event) {
-            self.ws_ready = true;
+            self.ready = true;
             self.connected = false;
             self.connect();
         }
