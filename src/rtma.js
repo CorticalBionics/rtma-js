@@ -181,7 +181,7 @@ export class RTMAClient {
     constructor(server, port, module_id = 0, host_id = 0) {
         this.server = server;
         this.port = port;
-        this.ws_ready = false;
+        this.ready = false;
         this.error = false;
         this.connected = false;
         this.host_id = host_id;
@@ -246,6 +246,7 @@ export class RTMAClient {
     }
 
     connect() {
+        console.log('rtma.js connect')
         let msg = CORE.MDF.CONNECT();
         msg.logger_status = 0;
         msg.daemon_status = 0;
@@ -260,16 +261,20 @@ export class RTMAClient {
         this.ws.close();
     }
 
-    subscribe(msg_type) {
-        let msg = CORE.MDF.SUBSCRIBE();
-        msg.msg_type = msg_type;
-        this.send_message(CORE.MT.SUBSCRIBE, msg);
+    subscribe(msg_types) {
+        msg_types.forEach((msg_type) => {
+            let msg = CORE.MDF.SUBSCRIBE();
+            msg.msg_type = msg_type;
+            this.send_message(CORE.MT.SUBSCRIBE, msg);
+        })
     }
 
-    unsubscribe(msg_type) {
-        let msg = CORE.MDF.UNSUBSCRIBE();
-        msg.msg_type = msg_type;
-        this.send_message(CORE.MT.UNSUBSCRIBE, msg);
+    unsubscribe(msg_types) {
+        msg_types.forEach((msg_type) => {
+            let msg = CORE.MDF.UNSUBSCRIBE();
+            msg.msg_type = msg_type;
+            this.send_message(CORE.MT.UNSUBSCRIBE, msg);
+        })
     }
 
     error_handler(msg) {
@@ -300,7 +305,7 @@ export class RTMAClient {
         var self = this;
 
         this.ws.onopen = function (event) {
-            self.ws_ready = true;
+            self.ready = true;
             self.connected = false;
             self.connect();
         }
