@@ -318,8 +318,8 @@ export class RTMAClient {
 
         this.ws.onmessage = function (event) {
             // Get a timestamp
-            // let now = performance.now() / 1000.0; // seconds
-            let now = Date.now() / 1000.0; // seconds
+            let now = performance.now() / 1000.0; // seconds
+            // let now = Date.now() / 1000.0; // seconds
 
             // Decode the rtma msg as json
             let clean = event.data.replace(/Infinity/g, "1e1000")

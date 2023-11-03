@@ -9,11 +9,12 @@ client.init();
 
 let send_times = Array(250).fill(0.0);
 let recv_times = Array(250).fill(0.0);
+
 let dt = Array(250).fill(0.0);
 let i = 0;
 let tmp_max = -1;
 let max_val = -1;
-let prev_recv_time = -1;
+let prev_recv_time = null;
 let prev_serial = null;
 
 var stats = document.getElementById('stats');
@@ -35,7 +36,16 @@ client.on_message = (msg) => {
         prev_serial = msg.data.serial_no;
         send_times[i] = msg.header.send_time;
         recv_times[i] = msg.header.recv_time;
-        dt[i] = msg.header.recv_time - msg.header.send_time;
+
+        if (prev_recv_time == null) {
+            prev_recv_time = msg.header.recv_time;
+            return;
+        }
+        else {
+            dt[i] = msg.header.recv_time - prev_recv_time;
+        }
+
+        // dt[i] = msg.header.recv_time - msg.header.send_time;
 
         if (dt[i] > tmp_max) {
             tmp_max = dt[i];
