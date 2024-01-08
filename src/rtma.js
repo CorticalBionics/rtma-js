@@ -171,7 +171,7 @@ const CORE = {
 };
 
 export class RTMAClient {
-  constructor(server, port, module_id = 0, host_id = 0) {
+  constructor(server = "127.0.0.1", port = 5678, module_id = 0, host_id = 0) {
     this.server = server;
     this.port = port;
     this.ready = false;
@@ -202,7 +202,7 @@ export class RTMAClient {
   }
 
   send_message(msg_type, msg_data, dest_mod_id = 0, dest_host_id = 0) {
-    let hdr = CORE.MDF.RTMA_MSG_HEADER();
+    const hdr = CORE.MDF.RTMA_MSG_HEADER();
     hdr.msg_type = msg_type;
     hdr.msg_count = this.msg_count;
     hdr.recv_time = 0;
@@ -222,7 +222,7 @@ export class RTMAClient {
   }
 
   send_signal(msg_type, dest_mod_id = 0, dest_host_id = 0) {
-    let hdr = CORE.MDF.RTMA_MSG_HEADER();
+    const hdr = CORE.MDF.RTMA_MSG_HEADER();
     hdr.msg_type = msg_type;
     hdr.msg_count = this.msg_count;
     hdr.send_time = Date.now() / 1000;
@@ -240,7 +240,7 @@ export class RTMAClient {
 
   connect() {
     console.log("rtma.js connect");
-    let msg = CORE.MDF.CONNECT();
+    const msg = CORE.MDF.CONNECT();
     msg.logger_status = 0;
     msg.daemon_status = 0;
     this.send_message(CORE.MT.CONNECT, msg);
@@ -257,7 +257,7 @@ export class RTMAClient {
 
   subscribe(msg_types) {
     msg_types.forEach((msg_type) => {
-      let msg = CORE.MDF.SUBSCRIBE();
+      const msg = CORE.MDF.SUBSCRIBE();
       msg.msg_type = msg_type;
       this.send_message(CORE.MT.SUBSCRIBE, msg);
     });
@@ -265,7 +265,7 @@ export class RTMAClient {
 
   unsubscribe(msg_types) {
     msg_types.forEach((msg_type) => {
-      let msg = CORE.MDF.UNSUBSCRIBE();
+      const msg = CORE.MDF.UNSUBSCRIBE();
       msg.msg_type = msg_type;
       this.send_message(CORE.MT.UNSUBSCRIBE, msg);
     });
@@ -295,7 +295,7 @@ export class RTMAClient {
 
   init() {
     this.ws = new WebSocket(`ws://${this.server}:${this.port}`);
-    var self = this;
+    const self = this;
 
     this.ws.onopen = function (event) {
       self.ready = true;
@@ -316,12 +316,10 @@ export class RTMAClient {
 
     this.ws.onmessage = function (event) {
       // Get a timestamp
-      let now = performance.now() / 1000.0; // seconds
-      // let now = Date.now() / 1000.0; // seconds
+      const now = performance.now() / 1000.0; // seconds
 
       // Decode the rtma msg as json
-      let clean = event.data.replace(/Infinity/g, "1e1000");
-      let msg = JSON.parse(clean);
+      const msg = JSON.parse(event.data.replace(/Infinity/g, "1e1000"));
 
       // Handle error messages from the ws server
       if (msg.hasOwnProperty("error")) {
