@@ -233,12 +233,12 @@ export class RTMAClient {
     hdr.num_data_bytes = 0;
 
     // Send through the websocket
-    this.ws.send(JSON.stringify(hdr));
+    this.ws.send(JSON.stringify({ header: hdr, data: null }));
 
     this.msg_count++;
   }
 
-  connect() {
+  _connect() {
     console.log("rtma.js connect");
     const msg = CORE.MDF.CONNECT();
     msg.logger_status = 0;
@@ -293,14 +293,14 @@ export class RTMAClient {
     }
   }
 
-  init() {
+  connect() {
     this.ws = new WebSocket(`ws://${this.server}:${this.port}`);
     const self = this;
 
     this.ws.onopen = function (event) {
       self.ready = true;
       self.connected = false;
-      self.connect();
+      self._connect();
     };
 
     this.ws.onclose = function (event) {
