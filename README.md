@@ -69,7 +69,7 @@ To install rtma-js as a npm package into your react project:
 
 4. Using RTMAClient
 
-    ```
+    ```js
     import { RTMA } from "climber_message";
     import { RTMAClient } from "rtma-js";
 
@@ -97,7 +97,7 @@ To install rtma-js as a npm package into your react project:
 
 
     A more complicated example with React useEffect() hook
-    ```
+    ```js
     import { useState, useEffect, useRef } from 'react';
     import { RTMA } from "climber_message";
     import { RTMAClient } from "rtma-js";
