@@ -80,7 +80,7 @@ To install rtma-js as a npm package into your react project:
 
         let client = new RTMAClient(server, port, module_id);
 
-        client.init();
+        //install handlers before connecting
         client.on_connect = () => {
             // subscribe to an array of RTMA messages
             client.subscribe([RTMA.MT.FILTERED_SPIKE]);
@@ -89,6 +89,8 @@ To install rtma-js as a npm package into your react project:
         client.on_message = (msg) => {
             // your logic here
         }
+
+        client.connect();
 
     }      
     ```
@@ -105,7 +107,6 @@ To install rtma-js as a npm package into your react project:
         
      useEffect(() => {
         let client = new RTMAClient(server, port, module_id);
-        client.init();
 
         client.on_connect = () => {
             client.subscribe([RTMA.MT.FILTERED_SPIKE, RTMA.MT.SV_MSG]);
@@ -117,6 +118,8 @@ To install rtma-js as a npm package into your react project:
                 setSpikeCount(msg.data[graphType.current])
             }
         }
+
+        client.connect()
 
         /**
          * Storing client as a useRef() allows the websocket state to be accessible 
