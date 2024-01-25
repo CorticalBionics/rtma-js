@@ -1,5 +1,8 @@
 import pyrtma
 import time
+import sys
+
+sys.path.append("../")
 import msg_defs.test_defs
 import statistics
 
