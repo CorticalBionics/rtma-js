@@ -5,12 +5,12 @@ let server = "127.0.0.1";
 let port = 5678;
 let module_id = 0;
 let client = new RTMAClient(server, port, module_id);
-client.init();
 
+// Install handlers before connecting
 client.on_connect = () => {
     for (const [key, value] of Object.entries(RTMA.MT)) {
         if (value > 1200) {
-            client.subscribe(RTMA.MT[key]);
+            client.subscribe([RTMA.MT[key]]);
         };
     };
 }
@@ -24,6 +24,7 @@ client.on_message = (msg) => {
         }
     }
 
+
     console.log(`${name}: ${JSON.stringify(msg)}`);
 
     // Echo message back
@@ -31,5 +32,7 @@ client.on_message = (msg) => {
         client.send_message(msg.header.msg_type, msg.data, msg.header.src_mod_id);
 
 };
+
+client.connect();
 
 

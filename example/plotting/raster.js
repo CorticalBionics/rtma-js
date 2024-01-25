@@ -45,12 +45,12 @@ document.getElementById("btn").appendChild(button);
 
 button.addEventListener("click", function () {
     if (button.innerHTML === "UNSUBSCRIBE") {
-        client.unsubscribe(RTMA.MT.RASTER);
-        client.unsubscribe(RTMA.MT.STATUS);
+        client.unsubscribe([RTMA.MT.RASTER]);
+        client.unsubscribe([RTMA.MT.STATUS]);
         button.innerHTML = "SUBSCRIBE";
     } else {
-        client.subscribe(RTMA.MT.RASTER);
-        client.subscribe(RTMA.MT.STATUS);
+        client.subscribe([RTMA.MT.RASTER]);
+        client.subscribe([RTMA.MT.STATUS]);
         button.innerHTML = "UNSUBSCRIBE";
     }
 });
@@ -64,12 +64,11 @@ let server = "127.0.0.1";
 let port = 5678;
 let module_id = 0;
 let client = new RTMAClient(server, port, module_id);
-client.init();
 
 // Subscribe to the messages that we want
 client.on_connect = function (event) {
-    client.subscribe(RTMA.MT.RASTER);
-    client.subscribe(RTMA.MT.STATUS);
+    client.subscribe([RTMA.MT.RASTER]);
+    client.subscribe([RTMA.MT.STATUS]);
 }
 
 let update = {};
@@ -97,6 +96,8 @@ client.on_message = function (msg) {
 
     replot = true;
 };
+
+client.connect();
 
 const intervalID = setInterval(refresh, 100);
 

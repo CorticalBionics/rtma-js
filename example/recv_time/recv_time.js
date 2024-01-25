@@ -5,7 +5,6 @@ let server = "127.0.0.1";
 let port = 5678;
 let module_id = 0;
 let client = new RTMAClient(server, port, module_id);
-client.init();
 
 let send_times = Array(250).fill(0.0);
 let recv_times = Array(250).fill(0.0);
@@ -20,7 +19,7 @@ let prev_serial = null;
 var stats = document.getElementById('stats');
 
 client.on_connect = () => {
-    client.subscribe(RTMA.MT.PING);
+    client.subscribe([RTMA.MT.PING]);
 }
 
 client.on_message = (msg) => {
@@ -74,4 +73,5 @@ client.on_message = (msg) => {
     }
 };
 
+client.connect();
 

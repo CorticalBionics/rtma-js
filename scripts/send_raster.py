@@ -4,6 +4,9 @@ import random
 import json
 import numpy as np
 
+import sys
+
+sys.path.append("../")
 import msg_defs.test_defs
 from typing import List
 
@@ -59,7 +62,7 @@ class RasterTest:
     def send_status(self, data):
         """Send Voltage Monitor Status rtma messages."""
         status = msg_defs.test_defs.MDF_STATUS()
-        status.msg = json.dumps(data).encode("ascii")
+        status.msg = json.dumps(data)
         status.msg_length = len(status.msg)
         self.mod.send_message(status)
 
