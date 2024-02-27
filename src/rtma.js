@@ -191,14 +191,23 @@ export class RTMAClient {
       // Store module id if dynamically assigned
       if (msg.header.dest_mod_id !== 0) {
         this.module_id = msg.header.dest_mod_id;
+        console.log(`rtma.js: Connected with mod ID ${this.module_id}`)
       }
 
       this.on_connect();
     };
 
     this.on_message = (msg) => {
-      console.log(`${JSON.stringify(msg)}`);
+      console.log(`rmta.js on_message: ${JSON.stringify(msg)}`);
     };
+
+    setInterval(this._send_keepalive, 1000, this)
+  }
+
+  _send_keepalive(self) {
+    if (self.ws && self.ws.readyState < self.ws.CLOSED && self.connected) {
+      self.ws.send("PING");
+    }
   }
 
   send_message(msg_type, msg_data, dest_mod_id = 0, dest_host_id = 0) {
@@ -239,7 +248,7 @@ export class RTMAClient {
   }
 
   _connect() {
-    console.log("rtma.js connect");
+    console.log("rtma.js: connect");
     const msg = CORE.MDF.CONNECT();
     msg.logger_status = 0;
     msg.daemon_status = 0;
@@ -248,17 +257,21 @@ export class RTMAClient {
   }
 
   disconnect() {
-    if (this.ws && this.ws.readyState < this.ws.CLOSED && this.connected)
+    if (this.ws && this.ws.readyState < this.ws.CLOSED && this.connected) {
       this.send_signal(CORE.MT.DISCONNECT);
+      if (this.ws.readyState < this.ws.CLOSING) {
+        this.ws.close();
+      }
+    }
     this.ready = false;
     this.connected = false;
-    if (this.ws.readyState < this.ws.CLOSING) this.ws.close();
   }
 
   subscribe(msg_types) {
     msg_types.forEach((msg_type) => {
       const msg = CORE.MDF.SUBSCRIBE();
       msg.msg_type = msg_type;
+      console.log(`rtma.js: Subscribing to ${msg_type}`);
       this.send_message(CORE.MT.SUBSCRIBE, msg);
     });
   }
@@ -267,12 +280,13 @@ export class RTMAClient {
     msg_types.forEach((msg_type) => {
       const msg = CORE.MDF.UNSUBSCRIBE();
       msg.msg_type = msg_type;
+      console.log(`rtma.js: Unsubscribing to ${msg_type}`);
       this.send_message(CORE.MT.UNSUBSCRIBE, msg);
     });
   }
 
   error_handler(msg) {
-    console.log(msg.error);
+    console.error(`rtma.js error: {msg.error}`);
     this.disconnect();
     this.connected = false;
     this.ready = false;
@@ -317,6 +331,10 @@ export class RTMAClient {
     this.ws.onmessage = function (event) {
       // Get a timestamp
       const now = performance.now() / 1000.0; // seconds
+
+      if (event.data === 'PONG'){
+        return
+      }
 
       // Decode the rtma msg as json
       const msg = JSON.parse(event.data.replace(/Infinity/g, "1e1000"));
