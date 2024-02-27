@@ -201,12 +201,12 @@ export class RTMAClient {
       console.log(`rmta.js on_message: ${JSON.stringify(msg)}`);
     };
 
-    setInterval(this._send_keepalive, 1000, this)
+    setInterval(this._send_keepalive.bind(this), 1000)
   }
 
-  _send_keepalive(self) {
-    if (self.ws && self.ws.readyState < self.ws.CLOSED && self.connected) {
-      self.ws.send("PING");
+  _send_keepalive() {
+    if (this.ws && this.ws.readyState < this.ws.CLOSED && this.connected) {
+      this.ws.send("PING");
     }
   }
 
