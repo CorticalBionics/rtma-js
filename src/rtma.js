@@ -201,7 +201,7 @@ export class RTMAClient {
       console.log(`rmta.js on_message: ${JSON.stringify(msg)}`);
     };
 
-    setInterval(this._send_keepalive.bind(this), 1000)
+    setInterval(this._send_keepalive.bind(this), 750)
   }
 
   _send_keepalive() {
