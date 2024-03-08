@@ -197,6 +197,13 @@ export class RTMAClient {
       this.on_connect();
     };
 
+    this.on_disconnect = () => {};
+
+    this._on_disconnect = () => {
+      console.log("rtma.js: disconnected");
+      this.on_disconnect();
+    };
+
     this.on_message = (msg) => {
       console.log(`rmta.js on_message: ${JSON.stringify(msg)}`);
     };
@@ -205,7 +212,7 @@ export class RTMAClient {
   }
 
   _send_keepalive() {
-    if (this.ws && this.ws.readyState < this.ws.CLOSED && this.connected) {
+    if (this.ws && this.ws.readyState === this.ws.OPEN && this.connected) {
       this.ws.send("PING");
     }
   }
@@ -315,24 +322,25 @@ export class RTMAClient {
     this.ws = new WebSocket(`ws://${this.server}:${this.port}`);
     const self = this;
 
-    this.ws.onopen = function (event) {
+    this.ws.onopen = (event) => {
       self.ready = true;
       self.connected = false;
       self._connect();
     };
 
-    this.ws.onclose = function (event) {
+    this.ws.onclose = (event) => {
       self.ready = false;
       self.connected = false;
       self.disconnect();
+      self._on_disconnect();
     };
 
-    this.ws.onerror = function (event) {
+    this.ws.onerror = (event) => {
       self.ready = false;
       self.error = event;
     };
 
-    this.ws.onmessage = function (event) {
+    this.ws.onmessage = (event) => {
       // Get a timestamp
       const now = performance.now() / 1000.0; // seconds
 
