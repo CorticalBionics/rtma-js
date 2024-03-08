@@ -199,6 +199,10 @@ export class RTMAClient {
 
     this.on_disconnect = () => {};
 
+    this.on_error = (event) => {
+      console.error("rtma.js error");
+    };
+
     this._on_disconnect = () => {
       console.log("rtma.js: disconnected");
       this.on_disconnect();
@@ -301,6 +305,7 @@ export class RTMAClient {
 
   msg_error_handler(msg) {
     console.error(`rtma.js msg error: ${msg.rtma_msg_error}`);
+    this.on_error(msg);
   }
 
   core_msg_handler(msg) {
@@ -338,6 +343,7 @@ export class RTMAClient {
     this.ws.onerror = (event) => {
       self.ready = false;
       self.error = event;
+      self.on_error(event);
     };
 
     this.ws.onmessage = (event) => {
