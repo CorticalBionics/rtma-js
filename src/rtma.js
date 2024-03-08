@@ -191,7 +191,7 @@ export class RTMAClient {
       // Store module id if dynamically assigned
       if (msg.header.dest_mod_id !== 0) {
         this.module_id = msg.header.dest_mod_id;
-        console.log(`rtma.js: Connected with mod ID ${this.module_id}`)
+        console.log(`rtma.js: Connected with mod ID ${this.module_id}`);
       }
 
       this.on_connect();
@@ -201,7 +201,7 @@ export class RTMAClient {
       console.log(`rmta.js on_message: ${JSON.stringify(msg)}`);
     };
 
-    setInterval(this._send_keepalive.bind(this), 1000)
+    setInterval(this._send_keepalive.bind(this), 1000);
   }
 
   _send_keepalive() {
@@ -286,10 +286,14 @@ export class RTMAClient {
   }
 
   error_handler(msg) {
-    console.error(`rtma.js error: {msg.error}`);
+    console.error(`rtma.js error: ${msg.error}`);
     this.disconnect();
     this.connected = false;
     this.ready = false;
+  }
+
+  msg_error_handler(msg) {
+    console.error(`rtma.js msg error: ${msg.rtma_msg_error}`);
   }
 
   core_msg_handler(msg) {
@@ -332,8 +336,8 @@ export class RTMAClient {
       // Get a timestamp
       const now = performance.now() / 1000.0; // seconds
 
-      if (event.data === 'PONG'){
-        return
+      if (event.data === "PONG") {
+        return;
       }
 
       // Decode the rtma msg as json
@@ -341,7 +345,13 @@ export class RTMAClient {
 
       // Handle error messages from the ws server
       if (msg.hasOwnProperty("error")) {
-        error_handler(msg);
+        self.error_handler(msg);
+        return;
+      }
+
+      // Handle RTMA error
+      if (msg.hasOwnProperty("rtma_msg_error")) {
+        self.msg_error_handler(msg);
         return;
       }
 
