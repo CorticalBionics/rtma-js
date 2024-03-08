@@ -2,11 +2,11 @@
 
 Javascript rtma/websocket client.
 
-1. Install the latest pyrtma:
+1. Install the latest [pyrtma](https://github.com/pitt-rnel/pyrtma/):
 
     `pip install pyrtma`
 
-2. Write and build message defs for python and js (see pyrtma documentation):
+2. Write and build message defs for python and js (see [pyrtma documentation](https://pyrtma.readthedocs.io/)):
 
     `python -m pyrtma.compile -i message_defs.yaml --py --js`
 
