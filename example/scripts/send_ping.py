@@ -9,7 +9,7 @@ import statistics
 c = pyrtma.Client()
 c.connect(server_name="127.0.0.1:7111")
 msg = msg_defs.test_defs.MDF_PING()
-rate = 0.100
+rate = 0.010
 stats = [0.0 for _ in range(250)]
 i = 0
 serial = 0

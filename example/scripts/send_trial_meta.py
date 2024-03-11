@@ -3,11 +3,11 @@ import sys
 
 sys.path.append("../")
 
-import msg_defs.climber_config
+import msg_defs.test_defs2 as md
 
 c = pyrtma.Client()
 c.connect(server_name="127.0.0.1:7111")
-msg = msg_defs.climber_config.MDF_TRIAL_METADATA()
+msg = md.MDF_TRIAL_METADATA()
 while True:
     c.send_message(msg)
     print(msg.to_json())

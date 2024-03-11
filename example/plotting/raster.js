@@ -1,4 +1,4 @@
-import { RTMA } from "../../msg_defs/test_defs.js";
+import { RTMA } from "../msg_defs/test_defs.js";
 import { RTMAClient } from "../../src/rtma.js";
 
 let replot = false;

@@ -1,4 +1,4 @@
-import { RTMA } from "../../msg_defs/climber_config.js";
+import { RTMA } from "../msg_defs/test_defs2.js";
 import { RTMAClient } from "../../src/rtma.js";
 
 let server = "127.0.0.1";

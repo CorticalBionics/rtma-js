@@ -1,7 +1,6 @@
 # Message defs file in yaml format
 
 imports:
-  - ./mjvr_types.yaml
 
 string_constants:
   DEFAULT_MM_IP: "localhost:7111"
@@ -57,8 +56,6 @@ constants:
   MJ_MAX_JOINT: MAX_GRIPPER_JOINT_ANGLES
   MJ_MAX_CONTACT: MAX_GRIPPER_FORCES
 
-  # MujocoVR Defines
-  # moved to mjvr_types.h
   
   #ResultCodes: (Should be arranged as binary style flags to be added together)
   NoResult: -1  #not to be combined with other codes
@@ -149,7 +146,6 @@ module_ids:
   FORCE_PLATFORM_DISPLAY: 59
   
   MPL_FEEDBACK: 60
-  #MUJOCO_VR_MODULE: 61  # MujocoVR C++ Module  # def moved to mjvr_types.h
   AJA_CONTROL: 65  # python module to control Aja Ki Pro Mini video recorder
   SEAIOCONTROL: 66  # module to send digital high/low from SeaIO card in stim computer
   
@@ -446,56 +442,6 @@ message_defs:
       velocity: double[MAX_GRIPPER_DIMS]
       force: double[MAX_GRIPPER_FORCES]
       effector: char[64]
-
-  MUJOCO_SENSOR:
-    id: 1733
-    fields: 
-      header: MSG_HEADER
-      motor_pos: double[MJ_VR_MAX_MOTOR_COUNT]
-      motor_vel: double[MJ_VR_MAX_MOTOR_COUNT]
-      motor_torque: double[MJ_VR_MAX_MOTOR_COUNT]
-      joint_pos: double[MJ_VR_MAX_JOINT_COUNT]
-      joint_vel: double[MJ_VR_MAX_JOINT_COUNT]
-      contact: double[MJ_VR_MAX_CONTACT_COUNT]
-
-  MUJOCO_CMD:
-    id: 1734
-    fields: 
-      header: MSG_HEADER
-      ref_pos: double[MJ_MAX_MOTOR]
-      ref_vel: double[MJ_MAX_MOTOR]
-      gain_pos: double[MJ_MAX_MOTOR]
-      gain_vel: double[MJ_MAX_MOTOR]
-      ref_pos_enabled: short
-      ref_vel_enabled: short
-      gain_pos_enabled: short
-      gain_vel_enabled: short
-
-  MUJOCO_MOVE:
-    id: 1735
-    fields: 
-      mocap_id: unsigned int  # mocap id associated with object (order in model file)
-      link_objects: unsigned int  #flag to link or unlink objects (such that they all move together), this is read only if mocap_id is set to MUJOCO_LINK_ID
-      pos: double[3]
-
-  MUJOCO_MSG:
-    id: 1736
-    fields: 
-      message: char[256] # mujoco message text
-      position: int  # 0: top right, 1: top left, 2: bottom right, 3: bottom left
-
-  MUJOCO_GHOST_COLOR:
-    id: 1737
-    fields: 
-      color_id: double  # color_id: 0 (invisible), 1 (red), 2 (green), 3 (yellow)
-
-  MUJOCO_OBJMOVE:
-    id: 1738
-    fields: 
-      obj_id: unsigned int  # mocap id associated with object (order in model file)
-      padding: int # 64-bit alignment
-      pos: double[3]
-      orientation: double[3]
 
   OPENHAND_CMD:
     id: 1740
@@ -1428,7 +1374,7 @@ message_defs:
     id: 4100  # message to log lambda value in cst task
     fields: 
       header: MSG_HEADER
-      lambda: float
+      cst_lambda: float
       k: int
       cursor_pos: double  # if discretized, different than control_space_feedback
 
@@ -1589,11 +1535,6 @@ message_defs:
     id: 4212
     fields: 
       joint_pos: double[KUKA_DOF_COUNT] #radians
-
- 
-  # MujocoVR C++ Messages
-  # moved to mjvr_types.h
-  # MT:4213-4232 in use (as of: 2020-06-08)
   
   # Lux Sensor
   VEML7700_SYNC:
