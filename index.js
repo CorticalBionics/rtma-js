@@ -1,5 +1,1 @@
-const { RTMAClient } = require("./src/rtma");
-
-module.exports = {
-  RTMAClient,
-};
+export { RTMAClient } from "./src/rtma";
