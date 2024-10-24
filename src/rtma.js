@@ -31,6 +31,12 @@ const CORE = {
     MODULE_READY: 26,
     SAVE_MESSAGE_LOG: 56,
     TIMING_MESSAGE: 80,
+    RTMA_LOG: 40,
+    RTMA_LOG_CRITICAL: 41,
+    RTMA_LOG_ERROR: 42,
+    RTMA_LOG_WARNING: 43,
+    RTMA_LOG_INFO: 44,
+    RTMA_LOG_DEBUG: 45
   },
 
   MID: {
@@ -145,6 +151,78 @@ const CORE = {
         timing: Array(MAX_MESSAGE_TYPES).fill(0),
         ModulePID: Array(MAX_MODULES).fill(0),
         send_time: 0,
+      };
+    },
+
+    RTMA_LOG: () => {
+      return {
+        time: 0,
+        level: 0,
+        lineno: 0,
+        name: "", 
+        pathname: "",
+        funcname: "",
+        message: "",
+      };
+    },
+
+    RTMA_LOG_CRITICAL: () => {
+      return {
+        time: 0,
+        level: 0,
+        lineno: 0,
+        name: "", 
+        pathname: "",
+        funcname: "",
+        message: "",
+      };
+    },
+
+    RTMA_LOG_ERROR: () => {
+      return {
+        time: 0,
+        level: 0,
+        lineno: 0,
+        name: "", 
+        pathname: "",
+        funcname: "",
+        message: "",
+      };
+    },
+
+    RTMA_LOG_WARNING: () => {
+      return {
+        time: 0,
+        level: 0,
+        lineno: 0,
+        name: "", 
+        pathname: "",
+        funcname: "",
+        message: "",
+      };
+    },
+
+    RTMA_LOG_INFO: () => {
+      return {
+        time: 0,
+        level: 0,
+        lineno: 0,
+        name: "", 
+        pathname: "",
+        funcname: "",
+        message: "",
+      };
+    },
+
+    RTMA_LOG_DEBUG: () => {
+      return {
+        time: 0,
+        level: 0,
+        lineno: 0,
+        name: "", 
+        pathname: "",
+        funcname: "",
+        message: "",
       };
     },
 
@@ -321,6 +399,78 @@ export class RTMAClient {
       default:
         break;
     }
+  }
+
+  log_critical(msg_text) {
+    const msg = CORE.MDF.RTMA_LOG_CRITICAL();
+    msg.time = Date.now()/1000;
+    msg.level = 50;
+    msg.name = this.module_id.toString();
+    msg.msg = msg_text;
+    
+    console.error("CRITICAL: " + msg_text);
+
+    this.send_message(CORE.MT.RTMA_LOG_CRITICAL, msg);
+  }
+
+  log_error(msg_text) {
+    const msg = CORE.MDF.RTMA_LOG_ERROR();
+    msg.time = Date.now()/1000;
+    msg.level = 40;
+    msg.name = this.module_id.toString();
+    msg.msg = msg_text;
+    
+    console.error("ERROR: " + msg_text);
+
+    this.send_message(CORE.MT.RTMA_LOG_ERROR, msg);
+  }
+
+  log_warning(msg_text) {
+    const msg = CORE.MDF.RTMA_LOG_WARNING();
+    msg.time = Date.now()/1000;
+    msg.level = 30;
+    msg.name = this.module_id.toString();
+    msg.msg = msg_text;
+    
+    console.error("WARNING: " + msg_text);
+
+    this.send_message(CORE.MT.RTMA_LOG_WARNING, msg);
+  }
+
+  log_info(msg_text) {
+    const msg = CORE.MDF.RTMA_LOG_INFO();
+    msg.time = Date.now()/1000;
+    msg.level = 20;
+    msg.name = this.module_id.toString();
+    msg.msg = msg;
+    
+    console.error("INFO: " + msg_text);
+
+    this.send_message(CORE.MT.RTMA_LOG_INFO, msg);
+  }
+
+  log_debug(msg_text) {
+    const msg = CORE.MDF.RTMA_LOG_DEBUG();
+    msg.time = Date.now()/1000;
+    msg.level = 10;
+    msg.name = this.module_id.toString();
+    msg.msg = msg_text;
+    
+    console.error("DEBUG: " + msg_text);
+
+    this.send_message(CORE.MT.RTMA_LOG_DEBUG, msg);
+  }
+
+  log(msg_text, level = 10) {
+    const msg = CORE.MDF.RTMA_LOG();
+    msg.time = Date.now()/1000;
+    msg.level = level;
+    msg.name = this.module_id.toString();
+    msg.msg = msg_text;
+    
+    console.error("LOG: " + msg_text);
+
+    this.send_message(CORE.MT.RTMA_LOG, msg);
   }
 
   connect() {
