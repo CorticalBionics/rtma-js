@@ -261,6 +261,7 @@ export class RTMAClient {
     this.pending_ack = false;
     this.ws = null;
     this.connect_ack = false;
+    this.subscribed_types = Set([]);
 
     this.on_connect = () => {};
 
@@ -363,6 +364,7 @@ export class RTMAClient {
       console.log(`rtma.js: Subscribing to ${msg_type}`);
       this.send_message(CORE.MT.SUBSCRIBE, msg);
     });
+    this.subscribed_types.union(Set(msg_types));
   }
 
   unsubscribe(msg_types) {
@@ -372,6 +374,7 @@ export class RTMAClient {
       console.log(`rtma.js: Unsubscribing to ${msg_type}`);
       this.send_message(CORE.MT.UNSUBSCRIBE, msg);
     });
+    this.subscribed_types.difference(Set(msg_types));
   }
 
   error_handler(msg) {
