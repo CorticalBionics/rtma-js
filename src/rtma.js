@@ -409,7 +409,7 @@ export class RTMAClient {
     msg.time = Date.now()/1000;
     msg.level = 50;
     msg.name = this.module_id.toString();
-    msg.msg = msg_text;
+    msg.message = msg_text;
     
     console.error("CRITICAL: " + msg_text);
 
@@ -421,7 +421,7 @@ export class RTMAClient {
     msg.time = Date.now()/1000;
     msg.level = 40;
     msg.name = this.module_id.toString();
-    msg.msg = msg_text;
+    msg.message = msg_text;
     
     console.error("ERROR: " + msg_text);
 
@@ -433,9 +433,9 @@ export class RTMAClient {
     msg.time = Date.now()/1000;
     msg.level = 30;
     msg.name = this.module_id.toString();
-    msg.msg = msg_text;
+    msg.message = msg_text;
     
-    console.error("WARNING: " + msg_text);
+    console.warn("WARNING: " + msg_text);
 
     this.send_message(CORE.MT.RTMA_LOG_WARNING, msg);
   }
@@ -445,9 +445,9 @@ export class RTMAClient {
     msg.time = Date.now()/1000;
     msg.level = 20;
     msg.name = this.module_id.toString();
-    msg.msg = msg;
+    msg.message = msg_text;
     
-    console.error("INFO: " + msg_text);
+    console.log("INFO: " + msg_text);
 
     this.send_message(CORE.MT.RTMA_LOG_INFO, msg);
   }
@@ -457,21 +457,24 @@ export class RTMAClient {
     msg.time = Date.now()/1000;
     msg.level = 10;
     msg.name = this.module_id.toString();
-    msg.msg = msg_text;
+    msg.message = msg_text;
     
-    console.error("DEBUG: " + msg_text);
+    console.debug("DEBUG: " + msg_text);
 
     this.send_message(CORE.MT.RTMA_LOG_DEBUG, msg);
   }
 
-  log(msg_text, level = 10) {
+  log(msg_text, level = 0) {
     const msg = CORE.MDF.RTMA_LOG();
     msg.time = Date.now()/1000;
     msg.level = level;
     msg.name = this.module_id.toString();
-    msg.msg = msg_text;
+    msg.message = msg_text;
     
-    console.error("LOG: " + msg_text);
+    if (level < 20) { console.debug("LOG: " + msg_text); }
+    else if (level < 30) { console.log("LOG: " + msg_text); }
+    else if (level < 40) { console.warn("LOG: " + msg_text); }
+    else { console.error("LOG: " + msg_text); }
 
     this.send_message(CORE.MT.RTMA_LOG, msg);
   }
